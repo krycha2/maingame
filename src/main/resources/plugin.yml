@@ -1,0 +1,10 @@
+name: maingame
+version: '1.0-SNAPSHOT'
+main: org.naingame.maingame.Maingame
+api-version: '1.21'
+authors: [ pazdan5lllkkkk ]
+description: maianigame
+
+commands:
+  menu:
+    description: huuuh
