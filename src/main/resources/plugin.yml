@@ -1,10 +1,16 @@
 name: maingame
 version: '1.0-SNAPSHOT'
-main: org.naingam.maingame.Maingame
+main: org.naingame.maingame.Maingame
 api-version: '1.21'
 authors: [ pazdan5lllkkkk ]
 description: maianigame
 
 commands:
-  menu:
+  minegame:
     description: huuuh
+    permission: MG.meingu
+
+permissions:
+  MG.meingu:
+    description: Open Main Menu
+    default: not op

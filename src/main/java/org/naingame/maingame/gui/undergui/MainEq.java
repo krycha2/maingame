@@ -1,4 +1,4 @@
-package org.naingame.maingame.gui.eq;
+package org.naingame.maingame.gui.undergui;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ public class MainEq extends Menu {
         this.setTitle(ChatColor.BOLD + "" + ChatColor.YELLOW + "Ekwipenke");
         this.setSize(9*6);
 
-        ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS);
+        ItemStack filler = new ItemStack(Material.CYAN_STAINED_GLASS_PANE);
         ItemMeta meta =  filler.getItemMeta();
         meta.setDisplayName(" ");
         filler.setItemMeta(meta);
@@ -40,6 +40,7 @@ public class MainEq extends Menu {
                 new MainGui().displayTo(player);
             }
         });
+
 
     }
 }
