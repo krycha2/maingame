@@ -18,6 +18,8 @@ public class MainGcommand implements CommandExecutor {
         this.plugin = plugin;
     }*/
 
+    Maingame plugin = Maingame.getInstance();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] arg) {
         // sprawdzanie czy graczy wpsuje tą komende
@@ -38,7 +40,8 @@ public class MainGcommand implements CommandExecutor {
                 return true;
             }
         }else {
-            p.sendMessage(ChatColor.RED + "Nie posiadasz" + ChatColor.BOLD + "UPRAWNIEŃ!!");
+            // jezeli gracz nie poasiada uprawnień
+            p.sendMessage(plugin.getLangManager().get("messages.basic.nopermision"));
             p.playSound(p.getLocation(), Sound.BLOCK_CHEST_LOCKED, 0.8f, 1.2f);
         }
         return true;

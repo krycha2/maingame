@@ -1,0 +1,7 @@
+# The language the plugin is in
+# how to change the language
+# change "en_En" to one of the following
+# en_EN - English
+# pl_PL - Pohlish
+# es_ES - Spanish
+lang: "en_En"

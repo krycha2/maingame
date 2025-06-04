@@ -1,0 +1,21 @@
+messages:
+  basic:
+    back: "&c&lBack"
+    next: "&lNext"
+    nopermision: "&aYou don't have a permison"
+  gui:
+    maingui:
+      title: "&L&6 MainGame"
+      profile: "&5Profile"
+      merchant: "&l&6Merchant"
+      inventory: "&l&9Inventory"
+      crafting: "&l&7Crafting"
+    maineq:
+      title: "&l&6Inventory player"
+    mainplayerprofile:
+      title: "&5Profile"
+      upgrade: "&lUpgrade"
+    mianupgradegui:
+      title: "Upgrade"
+      fish_upgrade_lore: "sdsads\\nfsafsa"
+      fish_upgrade: "Fish Upgrade"

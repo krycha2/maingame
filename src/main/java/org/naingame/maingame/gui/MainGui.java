@@ -1,6 +1,5 @@
 package org.naingame.maingame.gui;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +11,7 @@ import org.naingame.maingame.system.guisystem.Menu;
 
 public class MainGui extends Menu {
     public MainGui(){
-        this.setTitle("Test");
+        this.setTitle(plugin.getLangManager().get("messages.gui.maingui.title"));
         this.setSize(9*4);
 
         this.addButton(new Button(10) {
@@ -21,10 +20,12 @@ public class MainGui extends Menu {
             public ItemStack getItem() {
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD);
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Profil");
+                if(meta != null){
+                    meta.setDisplayName(plugin.getLangManager().get("messages.gui.maingui.profile"));
+                    item.setItemMeta(meta);
+                }
                 return item;
             }
-
             @Override
             public void onClick(Player player) {
                 new MainPlayerProfile().displayTo(player);
@@ -37,11 +38,12 @@ public class MainGui extends Menu {
             public ItemStack getItem() {
                 ItemStack item = new ItemStack(Material.GOLD_INGOT);
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.GOLD + "merchant");
-                item.setItemMeta(meta);
+                if (meta!=null){
+                    meta.setDisplayName(plugin.getLangManager().get("messages.gui.maingui.merchant"));
+                    item.setItemMeta(meta);
+                }
                 return item;
             }
-
             @Override
             public void onClick(Player player) {
                 System.out.println("SKLEP");
@@ -54,11 +56,12 @@ public class MainGui extends Menu {
             public ItemStack getItem() {
                 ItemStack item = new ItemStack(Material.WHITE_BUNDLE);
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.WHITE + "Ekwipunek");
-                item.setItemMeta(meta);
+                if (meta!=null){
+                    meta.setDisplayName(plugin.getLangManager().get("messages.gui.maingui.inventory"));
+                    item.setItemMeta(meta);
+                }
                 return item;
             }
-
             @Override
             public void onClick(Player player) {
                 new MainEq().displayTo(player);
@@ -70,11 +73,12 @@ public class MainGui extends Menu {
             public ItemStack getItem() {
                 ItemStack item  = new ItemStack(Material.ANVIL);
                 ItemMeta meta =  item.getItemMeta();
-                meta.setDisplayName("CRAFTIGN");
-                item.setItemMeta(meta);
+                if (meta!=null){
+                    meta.setDisplayName(plugin.getLangManager().get("messages.gui.maingui.crafting"));
+                    item.setItemMeta(meta);
+                }
                 return item;
             }
-
             @Override
             public void onClick(Player player) {
 

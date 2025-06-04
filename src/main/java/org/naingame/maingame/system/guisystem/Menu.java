@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.naingame.maingame.Maingame;
 import org.naingame.maingame.system.guisystem.othercomponents.EmptyButton;
+import org.naingame.maingame.system.playerdata.PlayerDataManager;
 
 /**
  * Klasa reprezentująca menu GUI dla gracza
@@ -22,6 +23,10 @@ import org.naingame.maingame.system.guisystem.othercomponents.EmptyButton;
 public class Menu {
 
     private final List<Button> buttons = new ArrayList<>();
+
+    protected final Maingame plugin = Maingame.getInstance();
+
+    protected final PlayerDataManager data = Maingame.getInstance().getDataManager();
 
     private int size = 9 * 3;
     private String title = "Custom Menu";
@@ -65,19 +70,16 @@ public class Menu {
     protected final void fillSlots(List<Integer> slots, ItemStack fillerItem) {
         for (int slot : slots) {
             boolean slotTaken = false;
-
             for (Button button : buttons) {
                 if (button.getSlot() == slot) {
                     slotTaken = true;
                     break;
                 }
             }
-
             if (!slotTaken)
                 this.addButton(new EmptyButton(slot, fillerItem));
         }
     }
-
 
     /**
      * Wyświetla GUI graczowi

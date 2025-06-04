@@ -3,6 +3,7 @@ package org.naingame.maingame.system;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -35,10 +36,11 @@ public class LangManager {
      */
     public String get(String path){
         if (langConfig == null){
-            plugin.getLogger().log(Level.WARNING, "Plik lang nie został załadowany!");
+            plugin.getLogger().log(Level.WARNING, "The lang file has not been loaded!");
             return "Lang not loaded!";
         }
-        return langConfig.getString(path, path);
+        String raw = langConfig.getString(path, path);
+        raw = raw.replace("\\n", "\n"); // Zamień tekstowy "\n" na prawdziwy enter
+        return ChatColor.translateAlternateColorCodes('&', raw);
     }
-
 }
