@@ -78,6 +78,8 @@ public class CustomItemLoader {
                 // Czy item ma być niezniszczalny
                 meta.setUnbreakable(itemSec.getBoolean("unbreakable", false));
 
+                meta.setCraftT
+
                 // Ustawiamy meta do itemka
                 item.setItemMeta(meta);
             }

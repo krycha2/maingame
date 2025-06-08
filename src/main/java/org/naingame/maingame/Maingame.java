@@ -23,7 +23,7 @@ public final class Maingame extends JavaPlugin {
         instance = this;
         this.dataPlayerMenager = new PlayerDataManager(this);
         this.itemLoader = new CustomItemLoader(this);
-        langManager = new LangManager(this, "en_EN");
+        this.langManager = new LangManager(this, "en_EN");
         // rejestrowanie kliknięc w gui
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new CastofFisingItem(),this);

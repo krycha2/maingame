@@ -1,0 +1,11 @@
+items:
+  blaze_rod_flame:
+    material: BLAZE_ROD
+    name: "&6Zapieczona Pałka Blaze’a"
+    lore:
+      - "&7Złowiona z głębin piekieł."
+      - "&cGorąca w dotyku!"
+    enchants:
+      FIRE_ASPECT: 2
+    unbreakable: true
+    uncraftingtable: true

@@ -6,9 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.naingame.maingame.Maingame;
 
 public class CastofFisingItem implements Listener {
     // Metoda, która zostanie wywołana, gdy gracz coś złowi
+    protected final Maingame plugin = Maingame.getInstance();
+
     @EventHandler
     public void onFish(PlayerFishEvent event) {
         // Sprawdzamy, czy coś zostało złowione
@@ -25,16 +28,15 @@ public class CastofFisingItem implements Listener {
                 // Domyślnie dajemy 1 Blaze Roda
                 int amount = 1;
 
+                ItemStack blaze = plugin.getItemLoader().get("blaze_rod_flame");
                 // Jeśli trafimy na podwójny drop – dajemy 2
                 if (Math.random() < doubleDropChance) {
                     amount = 2;
                 }
 
-                // Tworzymy item i ustawiamy ilość
-                ItemStack blazeRod = new ItemStack(Material.BLAZE_ROD, amount);
-
+                blaze.setAmount(amount);
                 // Dodajemy graczowi do EQ
-                player.getInventory().addItem(blazeRod);
+                player.getInventory().addItem(blaze);
 
                 // Info dla gracza
                 if (amount == 2) {
