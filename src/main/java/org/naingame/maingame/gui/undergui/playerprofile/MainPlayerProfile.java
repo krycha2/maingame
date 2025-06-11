@@ -20,7 +20,6 @@ public class MainPlayerProfile extends Menu {
                 ItemMeta meta = item.getItemMeta();
                 if (meta!=null){
                     meta.setDisplayName(plugin.getLangManager().get("messages.gui.mainplayerprofile.upgrade"));
-
                     item.setItemMeta(meta);
                 }
                 return item;

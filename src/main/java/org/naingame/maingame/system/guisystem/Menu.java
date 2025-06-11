@@ -2,6 +2,7 @@ package org.naingame.maingame.system.guisystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -15,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.naingame.maingame.Maingame;
 import org.naingame.maingame.system.guisystem.othercomponents.EmptyButton;
-import org.naingame.maingame.system.playerdata.PlayerDataManager;
+import org.naingame.maingame.system.PlayerDataManager;
 
 /**
  * Klasa reprezentująca menu GUI dla gracza
@@ -27,6 +28,8 @@ public class Menu {
     protected final Maingame plugin = Maingame.getInstance();
 
     protected final PlayerDataManager data = Maingame.getInstance().getDataManager();
+    protected Player player;
+    protected UUID uuid = player.getUniqueId();
 
     private int size = 9 * 3;
     private String title = "Custom Menu";
@@ -85,6 +88,7 @@ public class Menu {
      * Wyświetla GUI graczowi
      */
     public final void displayTo(Player player) {
+        this.player = player;
         final Inventory inventory = Bukkit.createInventory(player, this.size,
                 ChatColor.translateAlternateColorCodes('&', this.title));
 

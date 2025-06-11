@@ -1,4 +1,4 @@
-package org.naingame.maingame.system.playerdata;
+package org.naingame.maingame.system;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,39 +14,42 @@ public class PlayerDataManager {
     private final JavaPlugin plugin;
     private final File playerDataFolder;
 
-    /**
-     * Konstruktor tworzący menadżera danych gracza.
-     * Tworzy folder "player_data" w folderze pluginu jeśli go nie ma.
-     */
     public PlayerDataManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.playerDataFolder = new File(plugin.getDataFolder(), "player_data");
 
         if (!playerDataFolder.exists()) {
-            playerDataFolder.mkdir();  // Tworzymy folder jeśli nie istnieje
+            playerDataFolder.mkdir();
         }
     }
 
-    /**
-     * Pobiera wartość bonusu z upgrade'u dla danego perka i gracza.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @return bonus z upgrade'u, lub 0.0 jeśli brak danych
-     */
+    public void createDefaultDataIfNotExists(UUID uuid) {
+        File file = getPlayerFile(uuid);
+        if (!file.exists()) {
+            FileConfiguration config = new YamlConfiguration();
+
+            // Domyślne wartości
+            config.set("perki.fish.level", 1);
+            config.set("perki.fish.upgrade", 0.02);
+            config.set("perki.fish.item", 0.0);
+
+            config.set("perki.fishdable.level", 1);
+            config.set("perki.fishdable.upgrade", 0.005);
+            config.set("perki.fishdable.item", 0.0);
+
+            saveConfig(config, file);
+            plugin.getLogger().info("Utworzono plik danych gracza: " + uuid.toString());
+        }
+    }
+
     public double getPerkUpgrade(UUID uuid, String perkName) {
         File file = getPlayerFile(uuid);
-        if (!file.exists()) return 0.0; // jeśli plik nie istnieje, zwracamy 0
+        if (!file.exists()) return 0.0;
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
         return config.getDouble("perki." + perkName + ".upgrade", 0.0);
     }
 
-    /**
-     * Pobiera wartość bonusu z przedmiotów dla danego perka i gracza.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @return bonus z itemów, lub 0.0 jeśli brak danych
-     */
     public double getPerkItemBonus(UUID uuid, String perkName) {
         File file = getPlayerFile(uuid);
         if (!file.exists()) return 0.0;
@@ -55,39 +58,17 @@ public class PlayerDataManager {
         return config.getDouble("perki." + perkName + ".item", 0.0);
     }
 
-    /**
-     * Ustawia wartość bonusu z upgrade'u dla danego perka i gracza.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @param value nowa wartość bonusu
-     */
     public void setPerkUpgrade(UUID uuid, String perkName, double value) {
         setPerkSource(uuid, perkName, value, "upgrade");
     }
 
-    /**
-     * Ustawia wartość bonusu z itemów dla danego perka i gracza.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @param value nowa wartość bonusu
-     */
     public void setPerkItemBonus(UUID uuid, String perkName, double value) {
         setPerkSource(uuid, perkName, value, "item");
     }
 
-    /**
-     * Dodaje wartość do istniejącego bonusu upgrade lub item.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @param value wartość do dodania (np. 5.0 oznacza +5%)
-     * @param source źródło bonusu - "upgrade" lub "item"
-     * @throws IllegalArgumentException gdy podane źródło jest nieprawidłowe
-     */
     public void addPerkBonus(UUID uuid, String perkName, double value, String source) {
-        // Lista dozwolonych źródeł
         List<String> allowedSources = Arrays.asList("upgrade", "item");
 
-        // Sprawdzamy czy source jest poprawne
         if (!allowedSources.contains(source.toLowerCase())) {
             throw new IllegalArgumentException("Nieznane źródło bonusu: " + source);
         }
@@ -95,33 +76,51 @@ public class PlayerDataManager {
         File file = getPlayerFile(uuid);
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        // Ścieżka do wartości w pliku YML
         String path = "perki." + perkName + "." + source.toLowerCase();
-
-        // Pobieramy aktualną wartość (domyślnie 0.0) i dodajemy nową
         double current = config.getDouble(path, 0.0);
         config.set(path, current + value);
 
-        // Zapisujemy zmiany do pliku
         saveConfig(config, file);
     }
 
-    /**
-     * Zwraca całkowity bonus (suma upgrade + item) dla danego perka i gracza.
-     * @param uuid UUID gracza
-     * @param perkName nazwa perka
-     * @return suma bonusów
-     */
     public double getTotalPerkBonus(UUID uuid, String perkName) {
         return getPerkUpgrade(uuid, perkName) + getPerkItemBonus(uuid, perkName);
     }
 
-    // =================== Pomocnicze metody =====================
+    // ===== NOWOŚĆ: Obsługa poziomów (level) =====
 
     /**
-     * Ustawia wartość dla konkretnego źródła bonusu (upgrade lub item).
-     * Metoda prywatna, wywoływana przez publiczne setPerkUpgrade i setPerkItemBonus.
+     * Pobiera poziom danego perka gracza.
+     * Domyślnie zwraca 1, jeśli nic nie ma.
      */
+    public int getPerkLevel(UUID uuid, String perkName) {
+        File file = getPlayerFile(uuid);
+        if (!file.exists()) return 1;
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        return config.getInt("perki." + perkName + ".level", 1);
+    }
+
+    /**
+     * Ustawia nowy poziom danego perka gracza.
+     */
+    public void setPerkLevel(UUID uuid, String perkName, int level) {
+        File file = getPlayerFile(uuid);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config.set("perki." + perkName + ".level", level);
+        saveConfig(config, file);
+    }
+
+    /**
+     * Dodaje do poziomu gracza określoną ilość (np. +1).
+     */
+    public void addPerkLevel(UUID uuid, String perkName, int amount) {
+        int currentLevel = getPerkLevel(uuid, perkName);
+        setPerkLevel(uuid, perkName, currentLevel + amount);
+    }
+
+    // ===== Pomocnicze metody =====
+
     private void setPerkSource(UUID uuid, String perkName, double value, String source) {
         File file = getPlayerFile(uuid);
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -130,18 +129,10 @@ public class PlayerDataManager {
         saveConfig(config, file);
     }
 
-    /**
-     * Zwraca plik YML z danymi gracza po UUID.
-     */
     private File getPlayerFile(UUID uuid) {
         return new File(playerDataFolder, uuid.toString() + ".yml");
     }
 
-    /**
-     * Zapisuje konfigurację do pliku.
-     * @param config konfiguracja YAML
-     * @param file plik do zapisu
-     */
     private void saveConfig(FileConfiguration config, File file) {
         try {
             config.save(file);

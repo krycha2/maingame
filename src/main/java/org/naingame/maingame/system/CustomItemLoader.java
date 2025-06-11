@@ -66,7 +66,7 @@ public class CustomItemLoader {
                 ConfigurationSection enchSec = itemSec.getConfigurationSection("enchants");
                 if (enchSec != null) {
                     for (String enchKey : enchSec.getKeys(false)) {
-                        Enchantment ench = Enchantment.getByName(enchKey); // np. FIRE_ASPECT
+                        Enchantment ench = Enchantment.getByName(enchKey); // np. FIRE_ASPECT /// !!! przestarzała metoda
                         int level = enchSec.getInt(enchKey); // np. 2
 
                         if (ench != null) {
@@ -77,8 +77,6 @@ public class CustomItemLoader {
 
                 // Czy item ma być niezniszczalny
                 meta.setUnbreakable(itemSec.getBoolean("unbreakable", false));
-
-                meta.setCraftT
 
                 // Ustawiamy meta do itemka
                 item.setItemMeta(meta);
