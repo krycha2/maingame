@@ -1,12 +1,14 @@
 messages:
-  info:
-    fishinfoaumnt: "you are fising {amount} {item}"
-    fishifo: "you fished {item}"
+  admin:
+    notright: "podaj komende"
   basic:
     back: "&c&lBack"
     next: "&lNext"
     nopermision: "&aYou don't have a permison"
     levelup: "Zwiększyłeś poziom ulepszenia wędki do "
+  info:
+    fishinfoaumnt: "you are fising {amount} {item}"
+    fishifo: "you fished {item}"
   gui:
     maingui:
       title: "&L&6 MainGame"

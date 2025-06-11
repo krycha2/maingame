@@ -141,3 +141,22 @@ public class PlayerDataManager {
         }
     }
 }
+/*
+ public class CustomPointsManager {
+    private Map<UUID, Integer> points = new HashMap<>();
+
+    public int getPoints(UUID playerId) {
+        return points.getOrDefault(playerId, 0);
+    }
+
+    public void addPoints(UUID playerId, int amount) {
+        points.put(playerId, getPoints(playerId) + amount);
+    }
+
+    public void removePoints(UUID playerId, int amount) {
+        points.put(playerId, Math.max(0, getPoints(playerId) - amount));
+    }
+
+    // metody do ładowania i zapisywania z pliku/bazy
+}
+*/
